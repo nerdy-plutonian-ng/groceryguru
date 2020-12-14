@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
             Log.d("GG", "onCreate: ${grocery.name}")
         }
 
-        toBuyRecycler.setHasFixedSize(false)
+        //toBuyRecycler.setHasFixedSize(false)
         // use a linear layout manager
         val layoutManager = LinearLayoutManager(this)
         toBuyRecycler.layoutManager = layoutManager
@@ -59,12 +59,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun launchGroceryDialog(add : Boolean) {
-        val newDialog = GroceryDialog(add)
+        val newDialog = GroceryDialog(add,groceriestoBuy)
         newDialog.show(supportFragmentManager, "groceryDialog")
     }
 
     public fun notifyRecycler(){
         //Toast.makeText(this, "${groceriestoBuy.size} groceries", Toast.LENGTH_SHORT).show()
-        toBuyRecycler.swapAdapter(GroceriesAdapter(this,db.getGroceries()),true)
+        //toBuyRecycler.adapter?.notifyDataSetChanged()
+        toBuyRecycler.adapter?.notifyItemInserted(groceriestoBuy.size)
+        //toBuyRecycler.swapAdapter(GroceriesAdapter(this,db.getGroceries()),true)
     }
 }
