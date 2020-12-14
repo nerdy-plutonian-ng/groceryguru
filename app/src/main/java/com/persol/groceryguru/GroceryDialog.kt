@@ -13,7 +13,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
-class GroceryDialog(val add : Boolean) : DialogFragment() {
+class GroceryDialog(val add : Boolean,val groceries : MutableList<Grocery>) : DialogFragment() {
 
     private lateinit var db: DB;
 
@@ -41,6 +41,7 @@ class GroceryDialog(val add : Boolean) : DialogFragment() {
                     val utils = Utils()
                     val grocery = Grocery(utils.generateID(), nameET.text.toString().trim(), amountET.text.toString().trim().toDouble(), false)
                     if (db.addToGroceries(grocery)) {
+                        groceries.add(grocery)
                         Log.d("GG", "onCreateDialog: Grocery added")
                         Toast.makeText(activity!!, "Grocery added", Toast.LENGTH_SHORT).show()
                         (activity as MainActivity).notifyRecycler()
