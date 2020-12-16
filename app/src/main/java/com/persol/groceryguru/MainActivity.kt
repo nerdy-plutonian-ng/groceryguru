@@ -63,10 +63,7 @@ class MainActivity : AppCompatActivity() {
         newDialog.show(supportFragmentManager, "groceryDialog")
     }
 
-    public fun notifyRecycler(){
-        //Toast.makeText(this, "${groceriestoBuy.size} groceries", Toast.LENGTH_SHORT).show()
-        //toBuyRecycler.adapter?.notifyDataSetChanged()
+    public fun notifyInsertion(){
         toBuyRecycler.adapter?.notifyItemInserted(groceriestoBuy.size)
-        //toBuyRecycler.swapAdapter(GroceriesAdapter(this,db.getGroceries()),true)
     }
 }

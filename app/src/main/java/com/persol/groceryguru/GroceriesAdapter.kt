@@ -1,17 +1,15 @@
 package com.persol.groceryguru
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 
-class GroceriesAdapter (private val context : Context, private var groceries : MutableList<Grocery>,
-private val boughtGroceries : MutableList<Grocery>) :
+class GroceriesAdapter(private val context: Context, private var groceries: MutableList<Grocery>) :
     RecyclerView.Adapter<GroceriesAdapter.MyViewHolder>() {
-
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -27,11 +25,11 @@ private val boughtGroceries : MutableList<Grocery>) :
     }
 
     override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
+            parent: ViewGroup,
+            viewType: Int
     ): MyViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.grocery_item, parent,false)
+        val view = inflater.inflate(R.layout.grocery_item, parent, false)
         return MyViewHolder(view)
     }
 
@@ -44,23 +42,28 @@ private val boughtGroceries : MutableList<Grocery>) :
         holder.checkbox.isChecked = groceries[position].bought
         holder.amountTV.text = groceries[position].amount.toString()
         holder.moreIV.setOnClickListener{
-            Log.d("GG", "onBindViewHolder: More clicked")
-            Toast.makeText(context, "CLicked", Toast.LENGTH_SHORT).show()
+            val popup = PopupMenu(context, holder.moreIV)
+            val inflater: MenuInflater = popup.menuInflater
+            inflater.inflate(R.menu.grocery_options, popup.menu)
+            popup.setOnMenuItemClickListener {
+                if (it.itemId == R.id.delete) {
+                    val db = DB(context)
+                    groceries.removeAt(position)
+                    db.saveGroceries(groceries)
+                    this.notifyItemRemoved(position)
+                    Toast.makeText(context, "Grocery removed", Toast.LENGTH_SHORT).show()
+                }
+                false
+            }
+            popup.show()
         }
 
         holder.checkbox.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { compoundButton, b ->
-            if(b){
-                val boughtGrocery = groceries[position]
-                groceries.removeAt(position)
-                boughtGrocery.bought = true
-                boughtGroceries.add(boughtGrocery)
-            } else {
-                val boughtGrocery = groceries[position]
-                groceries.removeAt(position)
-                boughtGrocery.bought = true
-                boughtGroceries.add(boughtGrocery)
-            }
+            val db = DB(context)
+            groceries[position].bought = b
+            db.saveGroceries(groceries)
         })
 
     }
+
 }

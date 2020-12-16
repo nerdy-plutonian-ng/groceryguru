@@ -38,13 +38,12 @@ class GroceryDialog(val add : Boolean,val groceries : MutableList<Grocery>) : Di
                 } else if (amountET.text.isNullOrEmpty()) {
                     amountTIL.error = getString(R.string.empty_error)
                 } else {
-                    val utils = Utils()
-                    val grocery = Grocery(utils.generateID(), nameET.text.toString().trim(), amountET.text.toString().trim().toDouble(), false)
+                    val grocery = Grocery(generateID(), nameET.text.toString().trim(), amountET.text.toString().trim().toDouble(), false)
                     if (db.addToGroceries(grocery)) {
                         groceries.add(grocery)
                         Log.d("GG", "onCreateDialog: Grocery added")
                         Toast.makeText(activity!!, "Grocery added", Toast.LENGTH_SHORT).show()
-                        (activity as MainActivity).notifyRecycler()
+                        (activity as MainActivity).notifyInsertion()
                         dialog?.cancel()
                     } else {
                         Toast.makeText(activity!!, "Failed to add", Toast.LENGTH_SHORT).show()
@@ -64,4 +63,9 @@ class GroceryDialog(val add : Boolean,val groceries : MutableList<Grocery>) : Di
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
     }
+
+    fun generateID() : Int {
+        return (Math.random() * 9000000).toInt() + 1000000
+    }
+
 }

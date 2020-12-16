@@ -5,9 +5,10 @@
     <string name="amount">Amount</string>
     <string name="edit_grocery">Edit Grocery</string>
     <string name="preference_file_key">com.persol.groceryguru</string>
-    <string name="groceries">groceries</string>
+    <string name="groceries">Groceries</string>
     <string name="id">id</string>
     <string name="empty_error">This field can not be empty</string>
     <string name="to_buy">To buy</string>
     <string name="bought">Bought</string>
+    <string name="delete">Delete</string>
 </resources>
